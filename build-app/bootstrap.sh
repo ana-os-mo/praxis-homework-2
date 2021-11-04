@@ -30,3 +30,20 @@ then
     sudo npm install -g @vue/cli
 fi
 echo "vue -->" && vue --version
+
+rm -f /shared/vuego-demoapp
+rm -f /shared/dist.tar.gz
+
+cd
+git clone https://github.com/jdmendozaa/vuego-demoapp.git
+cd ~/vuego-demoapp/server/ 
+/usr/local/go/bin/go build
+mv vuego-demoapp /shared
+
+cd
+echo 'VUE_APP_API_ENDPOINT="http://10.0.0.8:4001/api"' > ~/vuego-demoapp/spa/.env.production.local
+cd ~/vuego-demoapp/spa/
+sudo npm install
+sudo npm run build
+tar -czf dist.tar.gz dist
+mv dist.tar.gz /shared
